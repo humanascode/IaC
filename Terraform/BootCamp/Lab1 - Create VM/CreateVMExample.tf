@@ -21,8 +21,6 @@ variable "vmName" {
   type = string
 }
 
-# description: vmSku must be one of the following: Standard_A4_v2 or Standard_A2_v2
-
 variable "vmSku" {
   type = string
   default = "Standard_A4_v2"

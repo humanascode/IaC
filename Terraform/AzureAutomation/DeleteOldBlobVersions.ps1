@@ -1,3 +1,5 @@
+# Connect with managed identity
+Connect-AzAccount -Identity
 # Define variables
 $saName = "demostorageaccount"
 $containerName = "state"

@@ -90,3 +90,31 @@ SETTINGS
     azurerm_virtual_desktop_host_pool.hostpool
   ]
 }
+
+
+
+resource "azurerm_virtual_machine_extension" "fslogix" {
+
+  count = var.rdsh_count
+  name               = "vm-fslogix"
+  virtual_machine_id = azurerm_windows_virtual_machine.avd_vm.*.id[count.index]
+  publisher          = "Microsoft.Compute"
+  type               = "CustomScriptExtension"
+  type_handler_version = "1.10"
+
+  settings = jsonencode({
+    "commandToExecute": join("", ["powershell.exe -ExecutionPolicy Unrestricted -Command \"& {",
+      "$fsLogixURL='https://aka.ms/fslogix_download';",
+      "$installerFile='fslogix_download.zip';",
+      "$LocalPath = 'C:\\windows\\temp';",
+      "Invoke-WebRequest $fsLogixURL -OutFile $LocalPath\\$installerFile;",
+      "Expand-Archive $LocalPath\\$installerFile -DestinationPath '$LocalPath\\fslogix';",
+      "write-host 'AIB Customization: Download Fslogix installer finished';",
+      "Start-Process -FilePath '$LocalPath\\fslogix\\x64\\Release\\FSLogixAppsSetup.exe' -ArgumentList '/install /quiet' -Wait -Passthru;",
+      "$regPath = 'HKLM:\\SOFTWARE\\FSLogix\\Profiles';",
+      "New-ItemProperty -Path $regPath -Name Enabled -PropertyType DWORD -Value 1 -Force;",
+      "New-ItemProperty -Path $regPath -Name VHDLocations -PropertyType MultiString -Value '\\\\${var.storage_account_name}.file.core.windows.net\\\\${var.fileshare_name}' -Force",
+      "}\""
+    ])
+  })
+}

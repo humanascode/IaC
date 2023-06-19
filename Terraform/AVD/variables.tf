@@ -98,3 +98,13 @@ variable "subnet_range" {
   type        = list(string)
   description = "Address range for session host subnet"
 }
+
+variable "storage_account_name" {
+  type = string
+  default = "sa"
+}
+
+variable "fileshare_name" {
+  type = string
+  default = "fslogix"
+}

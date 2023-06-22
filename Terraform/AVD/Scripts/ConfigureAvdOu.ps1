@@ -1,5 +1,5 @@
 # Get the domain DN
-$domainDN = ($domainroot = Get-ADRootDSE).defaultNamingContext
+$domainDN = (Get-ADRootDSE).defaultNamingContext
 
 # Create an OU for the AVD Session Hosts
 $ou = New-ADOrganizationalUnit -name "ouname" -Path $domainDN -PassThru

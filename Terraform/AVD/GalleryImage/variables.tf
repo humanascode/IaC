@@ -26,17 +26,10 @@ variable "prefix" {
 
 ### host creation varaibles ###
 
-
-variable "rg" {
-  type        = string
-  description = "Name of the Resource group in which to deploy session host"
-}
-
 variable "rdsh_count" {
   description = "Number of AVD machines to deploy"
   default     = 2
 }
-
 
 variable "domain_name" {
   type        = string
@@ -79,11 +72,6 @@ variable "local_admin_password" {
 
 
 ###networkCreation ###
-
-variable "rg_shared_name" {
-  type        = string
-  description = "Name of the Resource group in which to deploy shared resources"
-}
 
 variable "deploy_location" {
   type        = string

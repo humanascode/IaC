@@ -44,10 +44,6 @@ resource "azurerm_windows_virtual_machine" "avd_vm" {
    identity {
     type = "SystemAssigned"
   }
-
-  depends_on = [
-    azurerm_network_interface.avd_vm_nic
-  ]
 }
 
 resource "azurerm_virtual_machine_extension" "vmext_aadlogin" {
@@ -86,12 +82,10 @@ settings = <<-SETTINGS
 
 SETTINGS
 
-  depends_on = [
-    azurerm_virtual_desktop_host_pool.hostpool
-  ]
 }
 
 
+# FSlogix agent installation and configuration
 
 resource "azurerm_virtual_machine_extension" "fslogix" {
 
@@ -109,7 +103,6 @@ resource "azurerm_virtual_machine_extension" "fslogix" {
       "$LocalPath = 'C:\\windows\\temp';",
       "Invoke-WebRequest $fsLogixURL -OutFile $LocalPath\\$installerFile;",
       "Expand-Archive $LocalPath\\$installerFile -DestinationPath '$LocalPath\\fslogix';",
-      "write-host 'AIB Customization: Download Fslogix installer finished';",
       "Start-Process -FilePath '$LocalPath\\fslogix\\x64\\Release\\FSLogixAppsSetup.exe' -ArgumentList '/install /quiet' -Wait -Passthru;",
       "$regPath = 'HKLM:\\SOFTWARE\\FSLogix\\Profiles';",
       "New-ItemProperty -Path $regPath -Name Enabled -PropertyType DWORD -Value 1 -Force;",

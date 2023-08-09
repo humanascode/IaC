@@ -1,23 +1,21 @@
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.prefix}-VNet"
   address_space       = var.vnet_range
-  location            = var.deploy_location
-  resource_group_name = var.rg_name
-  depends_on          = [azurerm_resource_group.sh]
+  location            = azurerm_resource_group.sh.location
+  resource_group_name = azurerm_resource_group.sh.name
 }
 
 resource "azurerm_subnet" "subnet" {
   name                 = "default"
-  resource_group_name  = var.rg_name
+  resource_group_name  = azurerm_resource_group.sh.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.subnet_range
-  depends_on           = [azurerm_resource_group.sh]
 }
 
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.prefix}-NSG"
-  location            = var.deploy_location
-  resource_group_name = var.rg_name
+  location            = azurerm_resource_group.sh.location
+  resource_group_name = azurerm_resource_group.sh.name
   security_rule {
     name                       = "HTTPS"
     priority                   = 1001
@@ -29,7 +27,6 @@ resource "azurerm_network_security_group" "nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-  depends_on = [azurerm_resource_group.sh]
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_assoc" {

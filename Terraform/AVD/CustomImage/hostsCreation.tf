@@ -39,10 +39,6 @@ resource "azurerm_windows_virtual_machine" "avd_vm" {
    identity {
     type = "SystemAssigned"
   }
-
-  depends_on = [
-    azurerm_network_interface.avd_vm_nic
-  ]
 }
 
 resource "azurerm_virtual_machine_extension" "vmext_aadlogin" {
@@ -81,7 +77,4 @@ settings = <<-SETTINGS
 
 SETTINGS
 
-  depends_on = [
-    azurerm_virtual_desktop_host_pool.hostpool
-  ]
 }

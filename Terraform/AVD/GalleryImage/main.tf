@@ -41,7 +41,6 @@ resource "azurerm_virtual_desktop_application_group" "dag" {
   name                = "${var.prefix}-dag"
   friendly_name       = "Desktop AppGroup"
   description         = "AVD application group"
-  depends_on          = [azurerm_virtual_desktop_host_pool.hostpool, azurerm_virtual_desktop_workspace.workspace]
 }
 
 # Associate Workspace and DAG

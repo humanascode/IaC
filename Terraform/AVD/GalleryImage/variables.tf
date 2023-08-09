@@ -31,31 +31,9 @@ variable "rdsh_count" {
   default     = 2
 }
 
-variable "domain_name" {
-  type        = string
-  default     = "infra.local"
-  description = "Name of the domain to join"
-}
-
-variable "domain_user_upn" {
-  type        = string
-  default     = "domainjoineruser" # do not include domain name as this is appended
-  description = "Username for domain join (do not include domain name as this is appended)"
-}
-
-variable "domain_password" {
-  type        = string
-  description = "Password of the user to authenticate with the domain"
-  sensitive   = true
-}
-
 variable "vm_size" {
   description = "Size of the machine to deploy"
   default     = "Standard_DS2_v2"
-}
-
-variable "ou_path" {
-  default = ""
 }
 
 variable "local_admin_username" {
@@ -72,11 +50,6 @@ variable "local_admin_password" {
 
 
 ###networkCreation ###
-
-variable "deploy_location" {
-  type        = string
-  description = "The Azure Region in which all resources in this example should be created."
-}
 
 variable "vnet_range" {
   type        = list(string)
